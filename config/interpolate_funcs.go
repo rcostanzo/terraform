@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
+	"time"
 )
 
 // Funcs is the mapping of built-in functions for configuration.
@@ -12,10 +13,11 @@ var Funcs map[string]InterpolationFunc
 
 func init() {
 	Funcs = map[string]InterpolationFunc{
-		"concat": interpolationFuncConcat,
-		"file":   interpolationFuncFile,
-		"join":   interpolationFuncJoin,
-		"lookup": interpolationFuncLookup,
+		"concat":    interpolationFuncConcat,
+		"file":      interpolationFuncFile,
+		"join":      interpolationFuncJoin,
+		"lookup":    interpolationFuncLookup,
+		"timestamp": interpolationFuncTimestamp,
 	}
 }
 
@@ -83,6 +85,24 @@ func interpolationFuncLookup(
 		return "", fmt.Errorf(
 			"lookup in '%s' failed to find '%s'",
 			args[0], args[1])
+	}
+
+	return v, nil
+}
+
+// interpolationFuncTimestamp impelements print out the current date/time
+// using either the given layout or a default of 20060102150405
+func interpolationFuncTimestamp(
+	vs map[string]string, args ...string) (string, error) {
+	if len(args) > 1 {
+		return "", fmt.Errorf("timestamp expects either 0 or 1 argument")
+	}
+
+	v := ""
+	if len(args) == 1 {
+		v = time.Now().Format(args[0])
+	} else {
+		v = time.Now().Format("20060102150405")
 	}
 
 	return v, nil

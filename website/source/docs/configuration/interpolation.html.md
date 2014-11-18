@@ -74,3 +74,9 @@ The supported built-in functions are:
 
   * `lookup(map, key)` - Performs a dynamic lookup into a mapping
       variable.
+
+  * `timestamp(layout)` - Returns the current time formatted with the given layout.
+      Layout is an optional arguent. The layout is expected to be
+      based on the Go reference time of Mon Jan 2 15:04:05 MST 2006.
+      If no layout is passed, the default layout 20060102150405 is used.
+      Example: `timestamp("2006_01_02-15:04:05")` returns 2014_11_18-12:32:41

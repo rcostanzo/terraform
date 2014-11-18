@@ -189,3 +189,46 @@ func TestInterpolateFuncLookup(t *testing.T) {
 		}
 	}
 }
+
+func TestInterpolateFuncTimestamp(t *testing.T) {
+	cases := []struct {
+		Args   []string
+		Result string
+		Error  bool
+	}{
+		{
+			[]string{},
+			"20060102150405",
+			false,
+		},
+
+		{
+			[]string{"2006-01-02.15_04_05"},
+			"2006-01-02.15_04_05",
+			false,
+		},
+
+		{
+			[]string{"blah"},
+			"blah",
+			false,
+		},
+
+		{
+			[]string{"20060102150405", "20060102150405"},
+			"",
+			true,
+		},
+	}
+
+	for i, tc := range cases {
+		actual, err := interpolationFuncTimestamp(nil, tc.Args...)
+		if (err != nil) != tc.Error {
+			t.Fatalf("%d: err: %s", i, err)
+		}
+
+		if len(actual) != len(tc.Result) {
+			t.Fatalf("%d: bad: %#v", i, actual)
+		}
+	}
+}
