@@ -41,9 +41,9 @@ func init() {
 				ConfigValidator: &config.Validator{
 					Required: []string{
 						"vpc_id",
-						"route.*.cidr_block",
 					},
 					Optional: []string{
+						"route.*.cidr_block",
 						"route.*.gateway_id",
 						"route.*.instance_id",
 					},
@@ -92,13 +92,6 @@ func init() {
 				Destroy:         resource_aws_s3_bucket_destroy,
 				Diff:            resource_aws_s3_bucket_diff,
 				Refresh:         resource_aws_s3_bucket_refresh,
-			},
-
-			"aws_subnet": resource.Resource{
-				Create:  resource_aws_subnet_create,
-				Destroy: resource_aws_subnet_destroy,
-				Diff:    resource_aws_subnet_diff,
-				Refresh: resource_aws_subnet_refresh,
 			},
 		},
 	}
